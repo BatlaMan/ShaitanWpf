@@ -24,7 +24,7 @@ namespace ShaitanWpf.Audio
         private int secFromSilent = 0;
         private int time_Out_Sec;
         private int silent_Sec;
-        public event Action OnRecordingAbort;
+        public event Action<AbortType> OnRecordingAbort;
 
         public Recorder():this
          (Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "dat.wav")
@@ -60,10 +60,10 @@ namespace ShaitanWpf.Audio
                     }
                     else if (secFromSilent > Silent_Sec)
                     {
-                        Abort();
+                        Abort(AbortType.Silent);
                     }
                 }
-                else Abort();
+                else Abort(AbortType.TimeOut);
                 
             }
         }
@@ -119,10 +119,10 @@ namespace ShaitanWpf.Audio
         {
             return Task.Run(() => Start());
         }
-        private void Abort()
+        private void Abort(AbortType abortType)
         {
             Stop();
-            OnRecordingAbort?.Invoke();
+            OnRecordingAbort?.Invoke(abortType);
         }
     }
 }

@@ -17,6 +17,9 @@ using ShaitanWpf.Audio;
 using Hardcodet;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows;
+using Notifications.Wpf;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace ShaitanWpf.ViewModel
 {
@@ -45,6 +48,7 @@ namespace ShaitanWpf.ViewModel
                 }
             }
         }
+        
 
         Visibility imageVisibility;
         public Visibility ImageVisibility
@@ -75,15 +79,48 @@ namespace ShaitanWpf.ViewModel
             }
         }
 
+        bool recButtonEnable;
+        public bool RecButtonEnable
+        {
+            get { return recButtonEnable; }
+            set
+            {
+                if (recButtonEnable != value)
+                {
+                    recButtonEnable = value;
+                    OnPropertyChanged("RecButtonEnable");
+                }
+            }
+        }
+
+        bool snuggler;
+        public bool Snuggler
+        {
+            get { return snuggler; }
+            set
+            {
+                if (snuggler != value)
+                {
+                    snuggler = value;
+                    ChangeSnugglerType(snuggler);
+                    OnPropertyChanged("Snuggler");
+                }
+            }
+        }
+        
         public RecognizedPagesViewModel()
         {
             recognizCommand = new RelayCommand(RecognizSound);
             recorder = new Recorder();
             FragPage = new MusicPlayerPage();
+            RecButtonEnable = true;
             ImageVisibility = Visibility.Hidden;
+           
         }
         string conectionString = "mongodb://localhost";
         private IRecorder recorder;
+
+
         private bool isRecording = false;
         private async void RecognizSound(object obj)
         {
@@ -131,6 +168,56 @@ namespace ShaitanWpf.ViewModel
             }
         }
 
+        private void ChangeSnugglerType(bool type)
+        {
+            if (type)
+            {
+                RecButtonEnable = false;
+                var notificationManager = new NotificationManager();
+
+                notificationManager.Show(new NotificationContent
+                {
+                    Title = "Внимание",
+                    Message = "Вы включили режим фоновое распознование музыки. В это режиме доступ к обычному распознованию заблокирован",
+                    Type = NotificationType.Information
+                });
+                SnugglerRecognizeAsync();
+            }
+            else
+            {
+                RecButtonEnable = true;
+            }
+        }
+
+
+        private async void SnugglerRecognizeAsync()
+        {
+            await Task.Run(() => SnugglerRecognize());
+        }
+
+        IRecorder recorderSnuggler ;
+        private bool isRecordingSunn = false;
+        private async void SnugglerRecognize()
+        {
+            recorderSnuggler = new LoopBackRecorder();
+            recorderSnuggler.Silent_Sec = 80;
+            recorderSnuggler.OnRecordingAbort += OnRecordingSnugglerAbort;
+            while (true)
+            {
+                if (!isRecordingSunn)
+                {
+                    await recorderSnuggler.StartAsync();
+                    isRecordingSunn = !isRecordingSunn;
+                }
+                if (!Snuggler)
+                {
+                    isRecordingSunn = false;
+                    break;
+                }
+            }
+            recorderSnuggler.Stop();
+        }
+
         private async void RecognizeFile(string filePath)
         {
             IAudioService audioService = new NAudioService();
@@ -150,7 +237,7 @@ namespace ShaitanWpf.ViewModel
             else FragPage = new NoResultPage();
         }
       
-        private void OnRecordingAbort()
+        private void OnRecordingAbort(AbortType abortType)
         {
             
             ImageVisibility = Visibility.Hidden;
@@ -159,7 +246,38 @@ namespace ShaitanWpf.ViewModel
                 RecognizeFile(recorder.FilePath);
             });
 
-
         }
+        Song prevMatch;
+        bool isNoty;
+        private async void OnRecordingSnugglerAbort(AbortType abortType)
+        {
+
+           
+            IAudioService audioService = new NAudioService();
+            IDataStorage dataStorage = new MongoDatabaseHandler(conectionString, "Shaitan",
+           "Songs", "Hash");
+            var result = await QueryCommandBuilder.Instance.BuildQueryCommand()
+             .From(recorderSnuggler.FilePath)
+             .UsingServices(dataStorage, audioService)
+             .Query();
+            if (result.BestMath != null)
+            {
+
+               var notificationManager = new NotificationManager();
+                       
+               notificationManager.Show(new NotificationContent
+               {
+                     Title = result.BestMath.Title,
+                     Message = result.BestMath.Artist,
+                     Type = NotificationType.Success
+               });
+                    prevMatch = result.BestMath;
+                    isNoty = true;
+            }
+            isRecordingSunn = !isRecordingSunn;
+           
+        }
+
+      
     }
 }

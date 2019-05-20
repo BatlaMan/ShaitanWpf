@@ -14,6 +14,7 @@
         Background="#FF3B3845" >
 
     <Grid>
+        
         <Grid.Resources>
             <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
         </Grid.Resources>
@@ -28,14 +29,12 @@
                     Width="150" Height="150" Content=""
                     AllowDrop="True" local:FileDragDropHelper.IsFileDragDropEnabled="True"
                     Command="{Binding RecognizCommand}"
-                    local:FileDragDropHelper.FileDragDropTarget="{Binding}" >
+                    local:FileDragDropHelper.FileDragDropTarget="{Binding}"
+                    IsEnabled="{Binding RecButtonEnable}">
                 <Button.Template  >
                     <ControlTemplate  TargetType="Button">
-                        <Grid >
-
+                        <Grid>
                             <Ellipse Fill="#FF221D34"/>
-
-
                             <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="21,21,21,21">
                                 <Image.Triggers>
                                     <EventTrigger RoutedEvent="Loaded">
@@ -59,7 +58,6 @@
                                     </EventTrigger>
                                 </Image.Triggers>
                             </Image>
-
                             <Label Content="{TemplateBinding Content}" HorizontalAlignment="Center"
                                VerticalAlignment="Center"></Label>
                             <Image HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="{Binding ImageVisibility}"
@@ -78,7 +76,6 @@
                                 </Image.Triggers>
 
                             </Image>
-
                         </Grid>
 
                     </ControlTemplate>
@@ -126,6 +123,17 @@
                 <Image Source="pack://application:,,,/Assets/iterative.png" Height="40" Width="40"/>
             </materialDesign:ToggleButtonAssist.OnContent>
         </ToggleButton>
-        
+        <ToggleButton  Style="{StaticResource MaterialDesignActionToggleButton}" Grid.Column="0"
+           HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                       Height="50" Width="50" Background="#FF221D34" IsChecked="{Binding Snuggler}">
+            <ToggleButton.Content>
+                
+                <Image Source="pack://application:,,,/Assets/ear.png" Height="40" Width="40"/>
+            </ToggleButton.Content>
+
+            <materialDesign:ToggleButtonAssist.OnContent>
+                <Image Source="pack://application:,,,/Assets/mute-microphone.png" Height="40" Width="40"/>
+            </materialDesign:ToggleButtonAssist.OnContent>
+        </ToggleButton>
     </Grid>
 </Window>

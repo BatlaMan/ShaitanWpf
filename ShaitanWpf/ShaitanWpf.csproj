@@ -77,6 +77,9 @@
     <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
     </Reference>
+    <Reference Include="Notifications.Wpf, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Notifications.Wpf.0.1.1\lib\net461\Notifications.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
     </Reference>
@@ -121,6 +124,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AsyncObservableCollection.cs" />
+    <Compile Include="Audio\AbortType.cs" />
     <Compile Include="Audio\AudioDataProcesser.cs" />
     <Compile Include="Audio\IProcessData.cs" />
     <Compile Include="Audio\IRecorder.cs" />
@@ -247,6 +251,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\record.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\mute-microphone.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

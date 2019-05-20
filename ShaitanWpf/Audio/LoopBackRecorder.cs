@@ -26,7 +26,7 @@ namespace ShaitanWpf.Audio
         private int secFromSilent = 0;
         private int time_Out_Sec;
         private int silent_Sec;
-        public event Action OnRecordingAbort;
+        public event Action<AbortType> OnRecordingAbort;
 
         /// <summary>
         /// Constructor
@@ -41,7 +41,7 @@ namespace ShaitanWpf.Audio
         {
             this.filePath = filePath;
             this.processData = processData;
-            time_Out_Sec = 60;
+            time_Out_Sec = 15;
             silent_Sec = 2;
         }
 
@@ -61,7 +61,8 @@ namespace ShaitanWpf.Audio
             _waveIn.RecordingStopped += OnRecordingStopped;
             _waveIn.StartRecording();
             _isRecording = true;
-
+             secFromTimeOut = 0;
+              secFromSilent = 0;
             TimerCallback tm = new TimerCallback(Count);
             int sec = 0;
             timer = new Timer(tm, sec, 0, 1000);
@@ -124,19 +125,19 @@ namespace ShaitanWpf.Audio
         /// <param name="e"></param>
         void OnDataAvailable(object sender, WaveInEventArgs e)
         {
+                _writer.Write(e.Buffer, 0, e.BytesRecorded);
             if (secFromTimeOut < time_Out_Sec)
             {
-                _writer.Write(e.Buffer, 0, e.BytesRecorded);
                 if (processData.ProcessData(e))
                 {
                     secFromSilent = 0;
                 }
                 else if (secFromSilent > silent_Sec)
                 {
-                    Abort();
+                    Abort(AbortType.Silent);
                 }
             }
-            else Abort();
+            else Abort(AbortType.TimeOut);
         }
 
         public Task StartAsync()
@@ -144,10 +145,10 @@ namespace ShaitanWpf.Audio
             return Task.Run(() => Start());
         }
 
-        private void Abort()
+        private void Abort(AbortType abortType)
         {
             Stop();
-            OnRecordingAbort?.Invoke();
+            OnRecordingAbort?.Invoke(abortType);
         }
     }
 }

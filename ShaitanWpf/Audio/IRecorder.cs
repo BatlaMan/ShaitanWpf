@@ -9,7 +9,9 @@ namespace ShaitanWpf.Audio
     public interface IRecorder
     {
         string FilePath { get; }
-        event Action OnRecordingAbort;
+        int Time_Out_Sec { get ; set ; }
+        int Silent_Sec { get; set ; }
+        event Action<AbortType> OnRecordingAbort;
         void Start();
         Task StartAsync();
         void Stop();
