@@ -1,0 +1,20 @@
+﻿<Page x:Class="ShaitanWpf.View.NoResultPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ShaitanWpf.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450"
+      Title="NoResultPage"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"       
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="#FF3B3845" Width="442.105">
+
+    <Grid>
+        <Label Content="{DynamicResource m_NoResult}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="White" FontFamily="Segoe UI Black" FontSize="36"/>
+    </Grid>
+</Page>
