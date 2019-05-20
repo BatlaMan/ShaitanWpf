@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Xml.Serialization;
+using System.Collections.ObjectModel;
 
 namespace ShaitanWpf.ViewModel
 {
@@ -21,6 +22,19 @@ namespace ShaitanWpf.ViewModel
         private string songName;
         private string performer;
         private ImageSource imageSourceFromByte;
+
+        private ObservableCollection<LastLokingForModel> cards
+            = new AsyncObservableCollection<LastLokingForModel>();
+        public ObservableCollection<LastLokingForModel> Cards
+        {
+            get { return cards; }
+            set
+            {
+                cards = value;
+                OnPropertyChanged("Cards");
+            }
+        }
+
         public string SongName
         {
             get { return songName; }
@@ -61,20 +75,21 @@ namespace ShaitanWpf.ViewModel
         }
         public ResultViewModel(QueryResult query)
         {
-            //SongName = query.BestMath.Title;
-            //Performer = query.BestMath.Artist;
-            //GoogleImageParser googleImage = new GoogleImageParser(Performer);
-
-            //ImageSourceFromByte = googleImage.GetImageSourse();
-            //SaveLastQueryAsync(query);
+            SongName = query.BestMath.Title;
+            Performer = query.BestMath.Artist;
+            GoogleImageParser googleImage = new GoogleImageParser(Performer);
+            
+            ImageSourceFromByte = googleImage.GetImageSourse();
+            SaveLastQueryAsync(query);
+            InitSimilarAsync(query.MatchList);
         }
 
-        public async void SaveLastQueryAsync(QueryResult query)
+        private async void SaveLastQueryAsync(QueryResult query)
         {
             await Task.Run(() => SaveLastQuery(query));
         }
 
-        public void SaveLastQuery(QueryResult query)
+        private void SaveLastQuery(QueryResult query)
         {
             XmlSerializer formatter = new XmlSerializer(typeof(List<LastQuery>));
             List<LastQuery> temp;
@@ -89,6 +104,26 @@ namespace ShaitanWpf.ViewModel
             }
         }
 
+        private async void InitSimilarAsync(List<SongMatchCount> songMatches)
+        {
+            await Task.Run(() => InitSimilar(songMatches));
+        }
+
+        string conectionString = "mongodb://localhost";
+        private void InitSimilar(List<SongMatchCount> songMatches)
+        {
+            if (songMatches.Count > 0 && songMatches != null)
+            {
+                IDataStorage dataStorage = new MongoDatabaseHandler(conectionString, "Shaitan",
+           "Songs", "Hash");
+                foreach (var item in songMatches)
+                {
+                    Song song = dataStorage.GetSong(item.SongId);
+                    cards.Add(new LastLokingForModel(song.Title,song.Artist,item.Num));
+                }
+            }
+            else return;
+        }
         public List<LastQuery> LoadLastQuery()
         {
             XmlSerializer formatter = new XmlSerializer(typeof(List<LastQuery>));

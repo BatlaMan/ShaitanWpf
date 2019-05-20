@@ -62,7 +62,29 @@
         </Grid>
         <Border x:Name="border"  VerticalAlignment="Stretch" Width="0" HorizontalAlignment="Right" Background="Wheat">
             <Grid>
-
+                <ListBox Background="#FF3B3845"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        ItemsSource="{Binding Cards}" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.45*"/>
+                                </Grid.RowDefinitions>
+                                <Image Grid.Column="0" Source="{Binding Image}" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
+                                    <Label  Content="{Binding Title}" HorizontalAlignment="Center" Foreground="White" FontFamily="Segoe UI Black" FontSize="16" ></Label>
+                                    <Label  Content="{Binding Performer}" HorizontalAlignment="Center" Foreground="White" FontFamily="Segoe UI Black" FontSize="16" ></Label>
+                                    <Label  Content="{Binding Matching}" HorizontalAlignment="Center" Foreground="White" FontFamily="Segoe UI Black" FontSize="16" ></Label>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </Border>
     </Grid>

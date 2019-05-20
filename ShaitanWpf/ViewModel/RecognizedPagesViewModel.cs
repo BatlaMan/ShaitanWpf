@@ -79,7 +79,7 @@ namespace ShaitanWpf.ViewModel
         {
             recognizCommand = new RelayCommand(RecognizSound);
             recorder = new Recorder();
-            FragPage = new ResultPage(null);
+            FragPage = new MusicPlayerPage();
             ImageVisibility = Visibility.Hidden;
         }
         string conectionString = "mongodb://localhost";

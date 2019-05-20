@@ -1,14 +1,17 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+using System;
 
 namespace ShaitanWpf.Model
 {
-    class LastLokingForModel : INotifyPropertyChanged
+    [Serializable]
+    public class LastLokingForModel : INotifyPropertyChanged
     {
         private string title;
         private string performer;
         private string pathToFile;
+        private int matching;
         private ImageSource image;
         
 
@@ -22,6 +25,15 @@ namespace ShaitanWpf.Model
                 OnPropertyChanged("Title");
             }
         }
+        public int Matching
+        {
+            get { return matching; }
+            set
+            {
+                matching = value;
+                OnPropertyChanged("Matching");
+            }
+        }
         public string Performer
         {
             get { return performer; }
@@ -31,6 +43,7 @@ namespace ShaitanWpf.Model
                 OnPropertyChanged("Performer");
             }
         }
+       
         public ImageSource Image
         {
             get { return image; }
@@ -61,6 +74,17 @@ namespace ShaitanWpf.Model
             Image = imgSource;
         }
 
+        public LastLokingForModel(string title, string performer,int matched)
+        {
+            Title = title;
+            Performer = performer;
+            GoogleImageParser googleImage = new GoogleImageParser(Performer);
+            var imgSource = googleImage.GetImageSourse();
+            imgSource.Freeze();
+            Image = imgSource;
+            Matching = matched;
+        }
+
         public LastLokingForModel(string title, string performer,string pathtoFile)
         {
             Title = title;
@@ -77,6 +101,10 @@ namespace ShaitanWpf.Model
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+        public LastLokingForModel()
+        {
+
         }
     }
 }

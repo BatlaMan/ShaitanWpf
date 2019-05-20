@@ -14,6 +14,9 @@ using MaterialDesignThemes;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using ControlzEx;
+using System.Windows.Threading;
+using System.Threading;
+using System.Xml.Serialization;
 
 namespace ShaitanWpf.ViewModel
 {
@@ -22,6 +25,7 @@ namespace ShaitanWpf.ViewModel
         private MediaPlayer player = new MediaPlayer();
         private ObservableCollection<LastLokingForModel> cards
             = new AsyncObservableCollection<LastLokingForModel>();
+        public DispatcherTimer _currentTimeUpdateTimer;
         public ObservableCollection<LastLokingForModel> Cards
         {
             get { return cards; }
@@ -31,7 +35,7 @@ namespace ShaitanWpf.ViewModel
                 OnPropertyChanged("Cards");
             }
         }
-
+       
         LastLokingForModel selectedMusic;
         public LastLokingForModel SelectedMusic
         {
@@ -56,13 +60,55 @@ namespace ShaitanWpf.ViewModel
             }
         }
 
+        private RelayCommand repeatCommand;
+        public RelayCommand RepeatCommand
+        {
+            get
+            {
+                return repeatCommand;
+            }
+        }
+
+        private RelayCommand prevTrackCommand;
+        public RelayCommand PrevTrackCommand
+        {
+            get
+            {
+                return prevTrackCommand;
+            }
+        }
+        private RelayCommand nextTrackCommand;
+        public RelayCommand NextTrackCommand
+        {
+            get
+            {
+                return nextTrackCommand;
+            }
+        }
+        private RelayCommand savePlayListCommand;
+        public RelayCommand SavePlayListCommand
+        {
+            get
+            {
+                return savePlayListCommand;
+            }
+        }
+        private RelayCommand loadPlayListCommand;
+        public RelayCommand LoadPlayListCommand
+        {
+            get
+            {
+                return loadPlayListCommand;
+            }
+        }
+
         
         string nowPlayingPerformer;
         public string NowPlayingPerformer
         {
             get { return nowPlayingPerformer; }
             set
-            {
+            {               
                 if (nowPlayingPerformer != value)
                 {
                     nowPlayingPerformer = value;
@@ -99,6 +145,53 @@ namespace ShaitanWpf.ViewModel
             }
         }
 
+
+        double volume;
+        public double Volume
+        {
+            get { return volume; }
+            set
+            {
+                if (volume != value)
+                {
+                    volume = value;
+                    player.Volume = (double)volume / 100;
+                    OnPropertyChanged("Volume");
+                }
+            }
+        }
+
+        double maximum;
+        public double Maximum
+        {
+            get { return maximum; }
+            set
+            {
+                if (maximum != value)
+                {
+                    maximum = value;
+                    ChangeMusicPos(curPos);
+                    OnPropertyChanged("Maximum");
+                }
+            }
+        }
+
+        int curPos;
+        public int CurPos
+        {
+            get { return curPos; }
+            set
+            {
+                if (curPos != value)
+                {
+                    curPos = value;
+                    ChangeMusicPos(curPos);
+                    OnPropertyChanged("CurPos");
+                }
+            }
+        }
+
+
         PackIconKind playOrPauseIcon;
         public PackIconKind PlayOrPauseIcon
         {
@@ -117,9 +210,32 @@ namespace ShaitanWpf.ViewModel
         public MusicPlayerViewModel()
         {
             playPauseCommand = new RelayCommand(PlayOrPauseMusic);
+            repeatCommand = new RelayCommand(RepeatSong);
+            nextTrackCommand = new RelayCommand(NextTrack);
+            prevTrackCommand = new RelayCommand(PrevTrack);
+            savePlayListCommand = new RelayCommand(savePlayListC);
+            loadPlayListCommand = new RelayCommand(loadPlayListC);
+            Volume = 100;
             PlayOrPauseIcon = PackIconKind.Play;
         }
 
+        private void savePlayListC(object obj)
+        {
+            SavePlayListAsync();
+        }
+        private void loadPlayListC(object obj)
+        {
+            LoadPlayListAsync();
+        }
+
+        private void NextTrack(object obj)
+        {
+            ChangeTrackToNext();
+        }
+        private void PrevTrack(object obj)
+        {
+            ChangeTrackToPrev();
+        }
 
         private async void LoadImageForCardAsync(string[] songs)
         {
@@ -147,29 +263,105 @@ namespace ShaitanWpf.ViewModel
             NowPlayingTitle = selectedMusic.Title;
         }
 
-
+        private void RepeatSong(object obj)
+        {
+            player.Stop();
+            player.Play();
+        }
+        
+        
         bool isPlaying = false;
         private void PlayOrPauseMusic(object obj)
         {
-            if (isPlaying)
-            {
-
-                PlayOrPauseIcon = PackIconKind.Pause;
-                PlayMusic();
-                isPlaying = !isPlaying;
+            if (!isPlaying)
+            { 
+                if(cards.Count !=0 )
+                {
+                    PlayOrPauseIcon = PackIconKind.Pause;
+                    pos = cards.Select((x, i) => new { Element = x, Index = i })
+                        .First(x => x.Element == SelectedMusic).Index;
+                    PlayMusic();
+                    isPlaying = !isPlaying;
+                    _currentTimeUpdateTimer = new DispatcherTimer();
+                    _currentTimeUpdateTimer.Interval = TimeSpan.FromMilliseconds(100);
+                    _currentTimeUpdateTimer.Tick += new EventHandler(_currentTimeUpdateTimer_Tick);
+                    _currentTimeUpdateTimer.Start();
+                }           
             }
             else
             {
+                
                 PlayOrPauseIcon = PackIconKind.Play;
                 isPlaying = !isPlaying;
                 PauseMusic();
             }
         }
 
+        int pos = 0;
+        void _currentTimeUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            CurPos = (int)player.Position.TotalSeconds;
+            if(CurPos == 100)
+            {
+              ChangeTrackToNext();
+            }
+        }
+       
+        void ChangeMusicPos(int curPos)
+        {
+            
+            if(Math.Abs(player.Position.TotalSeconds - curPos) > 3)
+            player.Position = new TimeSpan(0, 0, curPos);
+        }
+
+        private void ChangeTrackToPrev()
+        {
+            pos--;
+            if (pos <= 0)
+            {
+                pos++;
+            }
+            else
+            {
+                SelectedMusic = cards[pos];
+                PlayMusic(cards[pos].PathToFile);
+            }
+        }
+
+        private void ChangeTrackToNext()
+        {
+            pos++;
+            if(pos >= cards.Count)
+            {
+                pos--;
+            }
+            else
+            {
+                SelectedMusic = cards[pos];
+                PlayMusic(cards[pos].PathToFile);
+            }
+        }
+
         private void PlayMusic()
         {
             player.Open(new Uri(SelectedMusic.PathToFile, UriKind.Relative));
+            player.MediaOpened += MediaOpened;     
             player.Play();
+        }
+
+        private void PlayMusic(string filePath)
+        {
+            player.Open(new Uri(filePath, UriKind.Relative));    
+             
+            player.MediaOpened += MediaOpened;
+            player.Play();
+        }
+
+        private void MediaOpened(object sender, EventArgs e)
+        {
+
+            if (player.NaturalDuration.HasTimeSpan)
+                Maximum = player.NaturalDuration.TimeSpan.TotalSeconds;
         }
 
         private void PauseMusic()
@@ -189,5 +381,38 @@ namespace ShaitanWpf.ViewModel
         {
             LoadImageForCardAsync(filepaths);
         }
+
+        private async void SavePlayListAsync()
+        {
+            await Task.Run(() => SavePlayList());
+        }
+
+        private void SavePlayList()
+        {
+            XmlSerializer formatter = new XmlSerializer(typeof(ObservableCollection<LastLokingForModel>));
+           
+            using (FileStream fs = new FileStream("Saves\\PlayList.xml", FileMode.OpenOrCreate))
+            {     
+                formatter.Serialize(fs, cards);
+                Console.WriteLine("Объект сериализован");
+            }
+        }
+
+        private async void LoadPlayListAsync()
+        {
+            await Task.Run(() => LoadLastQuery());
+        }
+     
+        public void LoadLastQuery()
+        {
+            if(File.Exists("Saves\\lastQ.xml"))
+            using (FileStream fs = new FileStream("Saves\\lastQ.xml", FileMode.Open))
+            {
+                XmlSerializer formatter = new XmlSerializer(typeof(List<LastQuery>));
+                cards = (AsyncObservableCollection<LastLokingForModel>)formatter.Deserialize(fs);
+             
+            }
+        }
+
     }
 }
