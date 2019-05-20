@@ -101,8 +101,6 @@ namespace ShaitanWpf.Model
                     return bytes;
                 }
             }
-
-            return null;
         }
     }
 }

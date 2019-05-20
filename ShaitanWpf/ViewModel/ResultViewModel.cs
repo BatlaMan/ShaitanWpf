@@ -61,12 +61,12 @@ namespace ShaitanWpf.ViewModel
         }
         public ResultViewModel(QueryResult query)
         {
-            SongName = query.BestMath.Title;
-            Performer = query.BestMath.Artist;
-            GoogleImageParser googleImage = new GoogleImageParser(Performer);
+            //SongName = query.BestMath.Title;
+            //Performer = query.BestMath.Artist;
+            //GoogleImageParser googleImage = new GoogleImageParser(Performer);
 
-            ImageSourceFromByte = googleImage.GetImageSourse();
-            SaveLastQueryAsync(query);
+            //ImageSourceFromByte = googleImage.GetImageSourse();
+            //SaveLastQueryAsync(query);
         }
 
         public async void SaveLastQueryAsync(QueryResult query)

@@ -142,9 +142,9 @@
                     <materialDesign:PackIcon Kind="RotateRight" VerticalAlignment="Center" Width="30" Height="30">
                         <materialDesign:PackIcon.Foreground>
                             <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                                <GradientStop Color="#FFD69016"/>
-                                <GradientStop Color="#FFD6511E" Offset="0.747"/>
-                                <GradientStop Color="#FF9B330D" Offset="0.807"/>
+                                <GradientStop Color="#FFFFF234"/>
+                                <GradientStop Color="#FFD6511E" Offset="0.37"/>
+                                <GradientStop Color="#FF9B330D" Offset="0.53"/>
                             </LinearGradientBrush>
                         </materialDesign:PackIcon.Foreground>
                     </materialDesign:PackIcon>

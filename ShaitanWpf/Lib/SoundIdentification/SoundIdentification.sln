@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundIdentification", "SoundIdentification\SoundIdentification.csproj", "{1BCABABB-D75E-40FF-98FB-ADD744702B7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundIdentification.AudioProxy", "SoundIdentification.AudioProxy\SoundIdentification.AudioProxy.csproj", "{5FB4D4ED-7881-405F-BC2B-A92EA60354DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BCABABB-D75E-40FF-98FB-ADD744702B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BCABABB-D75E-40FF-98FB-ADD744702B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BCABABB-D75E-40FF-98FB-ADD744702B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BCABABB-D75E-40FF-98FB-ADD744702B7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FB4D4ED-7881-405F-BC2B-A92EA60354DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB4D4ED-7881-405F-BC2B-A92EA60354DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB4D4ED-7881-405F-BC2B-A92EA60354DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB4D4ED-7881-405F-BC2B-A92EA60354DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53281F81-D086-4F09-AE40-8A1FCF6B0BD1}
+	EndGlobalSection
+EndGlobal

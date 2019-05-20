@@ -13,15 +13,35 @@
         TextOptions.TextFormattingMode="Ideal" 
         TextOptions.TextRenderingMode="Auto"        
         Background="#FF3B3845">
-
+    <Page.Resources>
+        <Storyboard x:Key="AllMatched">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="400"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AllMatched_Close">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="border">
+                <SplineDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="ToggleButton.Checked" SourceName="checkBox">
+            <BeginStoryboard Storyboard="{StaticResource AllMatched}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ToggleButton.Unchecked" SourceName="checkBox">
+            <BeginStoryboard x:Name="AllMatched_Close_BeginStoryboard" Storyboard="{StaticResource AllMatched_Close}"/>
+        </EventTrigger>
+    </Page.Triggers>
     <Grid>
+
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-
+            <CheckBox x:Name="checkBox" Margin="183.644,58.91,350,62.5"/>
             <Image Grid.Row="0" Source="{Binding ImageSourceFromByte}"/>
             <StackPanel Grid.Row="1" HorizontalAlignment="Stretch">
                 <Label HorizontalAlignment="Center" Content="{Binding SongName}" FontSize="32" FontFamily="Segoe UI Black" FontWeight="Bold" Foreground="White"></Label>
@@ -29,5 +49,10 @@
             </StackPanel>
 
         </Grid>
+        <Border x:Name="border"  VerticalAlignment="Stretch" Width="0" HorizontalAlignment="Right" Background="Wheat">
+            <Grid>
+
+            </Grid>
+        </Border>
     </Grid>
 </Page>
