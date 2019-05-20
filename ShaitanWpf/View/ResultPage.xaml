@@ -34,18 +34,29 @@
         </EventTrigger>
     </Page.Triggers>
     <Grid>
-
+        <Grid.Resources>
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+        </Grid.Resources>
         <Grid >
+
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-
-            <CheckBox x:Name="checkBox" Margin="183.644,58.91,350,62.5"/>
             <Image Grid.Row="0" Source="{Binding ImageSourceFromByte}"/>
             <StackPanel Grid.Row="1" HorizontalAlignment="Stretch">
                 <Label HorizontalAlignment="Center" Content="{Binding SongName}" FontSize="32" FontFamily="Segoe UI Black" FontWeight="Bold" Foreground="White"></Label>
                 <Label HorizontalAlignment="Center" Content="{Binding Performer}" FontSize="32" FontFamily="Segoe UI Black" Foreground="White"></Label>
+                <ToggleButton x:Name="checkBox"  Style="{StaticResource MaterialDesignActionToggleButton}" Grid.Column="0"
+                         HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                       Height="60" Width="60" Background="#FF221D34" IsChecked="{Binding RecType}" RenderTransformOrigin="0.584,0.725">
+                    <ToggleButton.Content>
+                        <Image Source="pack://application:,,,/Assets/charity.png" Height="40" Width="40"/>
+                    </ToggleButton.Content>
+                    <materialDesign:ToggleButtonAssist.OnContent>
+                        <Image Source="pack://application:,,,/Assets/iterative.png" Height="40" Width="40"/>
+                    </materialDesign:ToggleButtonAssist.OnContent>
+                </ToggleButton>
             </StackPanel>
 
         </Grid>

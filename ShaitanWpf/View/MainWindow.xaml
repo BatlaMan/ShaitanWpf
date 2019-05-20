@@ -46,12 +46,12 @@
                                                    Duration="0:0:6">
                                                     <DiscreteObjectKeyFrame KeyTime="0:0:0">
                                                         <DiscreteObjectKeyFrame.Value>
-                                                            <BitmapImage UriSource="C:\Users\Admin\Source\Repos\ShaitanWpf\ShaitanWpf\Assets\microphone.png"/>
+                                                            <BitmapImage UriSource="pack://application:,,,/Assets/microphone.png"/>
                                                         </DiscreteObjectKeyFrame.Value>
                                                     </DiscreteObjectKeyFrame>
                                                     <DiscreteObjectKeyFrame KeyTime="0:0:3">
                                                         <DiscreteObjectKeyFrame.Value>
-                                                            <BitmapImage UriSource="C:\Users\Admin\Source\Repos\ShaitanWpf\ShaitanWpf\Assets\microphone.png"/>
+                                                            <BitmapImage UriSource="pack://application:,,,/Assets/inbox.png"/>
                                                         </DiscreteObjectKeyFrame.Value>
                                                     </DiscreteObjectKeyFrame>
                                                 </ObjectAnimationUsingKeyFrames>
@@ -64,7 +64,7 @@
                             <Label Content="{TemplateBinding Content}" HorizontalAlignment="Center"
                                VerticalAlignment="Center"></Label>
                             <Image HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="{Binding ImageVisibility}"
-                                 Source="C:\Users\Admin\Source\Repos\ShaitanWpf\ShaitanWpf\Assets\record.png" Height="32" Width="32">
+                                 Source="pack://application:,,,/Assets/record.png" Height="32" Width="32">
                                 <Image.Triggers>
 
                                     <EventTrigger RoutedEvent="Loaded">
@@ -121,10 +121,10 @@
            HorizontalAlignment="Left" VerticalAlignment="Bottom"
                        Height="50" Width="50" Background="#FF221D34" IsChecked="{Binding RecType}">
             <ToggleButton.Content>
-                <Image Source="C:\Users\Admin\Source\Repos\ShaitanWpf\ShaitanWpf\Assets\charity.png" Height="40" Width="40"/>
+                <Image Source="pack://application:,,,/Assets/charity.png" Height="40" Width="40"/>
             </ToggleButton.Content>
             <materialDesign:ToggleButtonAssist.OnContent>
-                <Image Source="C:\Users\Admin\Source\Repos\ShaitanWpf\ShaitanWpf\Assets\iterative.png" Height="40" Width="40"/>
+                <Image Source="pack://application:,,,/Assets/iterative.png" Height="40" Width="40"/>
             </materialDesign:ToggleButtonAssist.OnContent>
         </ToggleButton>
         
