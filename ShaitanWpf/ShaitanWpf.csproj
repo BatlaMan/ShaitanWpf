@@ -85,7 +85,7 @@
     </Reference>
     <Reference Include="SoundIdentification, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\SoundIdentification\SoundIdentification.AudioProxy\bin\Debug\netstandard2.0\SoundIdentification.dll</HintPath>
+      <HintPath>Lib\SoundIdentification\SoundIdentification\bin\Debug\netstandard2.0\SoundIdentification.dll</HintPath>
     </Reference>
     <Reference Include="SoundIdentification.AudioProxy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

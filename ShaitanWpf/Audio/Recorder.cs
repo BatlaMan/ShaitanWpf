@@ -109,7 +109,10 @@ namespace ShaitanWpf.Audio
         }
         public void Stop()
         {
-
+            if (waveSource == null)
+            {
+                return;
+            }
             waveSource.StopRecording();
             Thread.Sleep(500);
             // RealTimeCollider.CompleteAdding();

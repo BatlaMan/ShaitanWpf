@@ -105,7 +105,16 @@ namespace ShaitanWpf.Model
         private byte[] GetBytedImage(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
-            var response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = null;
+            try
+            {
+                 response = (HttpWebResponse)request.GetResponse();
+
+            }
+            catch (Exception)
+            {
+                return new byte[0];
+            }
 
             using (Stream dataStream = response.GetResponseStream())
             {

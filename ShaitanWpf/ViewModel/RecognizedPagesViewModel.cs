@@ -264,7 +264,7 @@ namespace ShaitanWpf.ViewModel
         private async void SnugglerRecognize()
         {
             recorderSnuggler = new LoopBackRecorder();
-            recorderSnuggler.Silent_Sec = 80;
+            recorderSnuggler.Silent_Sec = 43;
             recorderSnuggler.OnRecordingAbort += OnRecordingSnugglerAbort;
             while (true)
             {
@@ -318,29 +318,31 @@ namespace ShaitanWpf.ViewModel
         private async void OnRecordingSnugglerAbort(AbortType abortType)
         {
 
-           
-            IAudioService audioService = new NAudioService();
-            IDataStorage dataStorage = new MongoDatabaseHandler(conectionString, "Shaitan",
-           "Songs", "Hash");
-            var result = await QueryCommandBuilder.Instance.BuildQueryCommand()
-             .From(recorderSnuggler.FilePath)
-             .UsingServices(dataStorage, audioService)
-             .Query();
-            if (result.BestMath != null)
+            if(abortType == AbortType.TimeOut)
             {
+                IAudioService audioService = new NAudioService();
+                IDataStorage dataStorage = new MongoDatabaseHandler(conectionString, "Shaitan",
+               "Songs", "Hash");
+                var result = await QueryCommandBuilder.Instance.BuildQueryCommand()
+                 .From(recorderSnuggler.FilePath)
+                 .UsingServices(dataStorage, audioService)
+                 .Query();
+                if (result.BestMath != null)
+                {
 
-               var notificationManager = new NotificationManager();
-                       
-               notificationManager.Show(new NotificationContent
-               {
-                     Title = result.BestMath.Title,
-                     Message = result.BestMath.Artist,
-                     Type = NotificationType.Success
-               });
+                    var notificationManager = new NotificationManager();
+
+                    notificationManager.Show(new NotificationContent
+                    {
+                        Title = result.BestMath.Title,
+                        Message = result.BestMath.Artist,
+                        Type = NotificationType.Success
+                    });
                     prevMatch = result.BestMath;
                     isNoty = true;
-            }
-            isRecordingSunn = !isRecordingSunn;
+                }
+            }     
+                isRecordingSunn = !isRecordingSunn;
            
         }
 

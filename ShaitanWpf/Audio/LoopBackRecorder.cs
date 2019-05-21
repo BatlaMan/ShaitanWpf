@@ -41,7 +41,7 @@ namespace ShaitanWpf.Audio
         {
             this.filePath = filePath;
             this.processData = processData;
-            time_Out_Sec = 15;
+            time_Out_Sec = 45;
             silent_Sec = 2;
         }
 
@@ -76,6 +76,10 @@ namespace ShaitanWpf.Audio
 
         public void Stop()
         {
+            if (_waveIn == null)
+            {
+                return;
+            }
             _waveIn.StopRecording();
             Thread.Sleep(500);
             // RealTimeCollider.CompleteAdding();
