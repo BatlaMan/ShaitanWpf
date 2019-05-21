@@ -2,6 +2,8 @@
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using System;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace ShaitanWpf.Model
 {
@@ -94,7 +96,22 @@ namespace ShaitanWpf.Model
             var imgSource = googleImage.GetImageSourse();
             imgSource.Freeze();
             Image = imgSource;
-        } 
+        }
+
+        public LastLokingForModel(string title, string performer, string pathtoFile, MemoryStream ms)
+        {
+            Title = title;
+            Performer = performer;
+            GoogleImageParser googleImage = new GoogleImageParser(Performer);
+            BitmapImage biImg = new BitmapImage();
+            biImg.BeginInit();
+            biImg.StreamSource = ms;
+            biImg.EndInit();
+            var imgSource = biImg;
+            imgSource.Freeze();
+            Image = imgSource;
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string prop = "")

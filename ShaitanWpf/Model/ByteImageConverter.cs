@@ -13,8 +13,8 @@ namespace ShaitanWpf.Model
     {
         public static ImageSource ByteToImage(byte[] imageData)
         {
-            BitmapImage biImg = new BitmapImage();
             MemoryStream ms = new MemoryStream(imageData);
+            BitmapImage biImg = new BitmapImage();
             biImg.BeginInit();
             biImg.StreamSource = ms;
             biImg.EndInit();

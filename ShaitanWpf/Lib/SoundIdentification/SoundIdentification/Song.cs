@@ -13,6 +13,7 @@ namespace SoundIdentification
         string year;
         string comment;
         string genre;
+        IPicture[] pictures;
 
         [BsonId]
         public int Id { get; set; }
@@ -22,6 +23,7 @@ namespace SoundIdentification
         public string Year { get => year; set => year = value; }
         public string Comment { get => comment; set => comment = value; }
         public string Genre { get => genre; set => genre = value; }
+        public IPicture[] Pictures { get => pictures; set => pictures = value; }
 
         public Song()
         {
@@ -47,6 +49,7 @@ namespace SoundIdentification
         {
 
             var tfile = File.Create(filePath);
+            pictures = tfile.Tag.Pictures;
             title = tfile.Tag.Title;
             artist = tfile.Tag.FirstPerformer;
             album = tfile.Tag.Album;

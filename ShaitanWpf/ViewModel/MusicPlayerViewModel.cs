@@ -250,7 +250,15 @@ namespace ShaitanWpf.ViewModel
                 if(File.Exists(songs[i]))
                 {
                     Song song = new Song(songs[i]);
-                    Cards.Add(new LastLokingForModel(song.Title, song.Artist, songs[i]));
+                    if(song.Pictures.Length != 0 && song.Pictures != null)
+                    {
+                        MemoryStream ms = new MemoryStream(song.Pictures[0].Data.Data);
+                        Cards.Add(new LastLokingForModel(song.Title, song.Artist,songs[i],ms));
+                    }
+                    else
+                    {
+                        Cards.Add(new LastLokingForModel(song.Title, song.Artist, songs[i]));
+                    }
                 }
             }
             return;
