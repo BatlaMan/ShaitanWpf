@@ -14,16 +14,26 @@
         Background="#FF3B3845" >
 
     <Grid>
-        
+
         <Grid.Resources>
             <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="201*"/>
-            <ColumnDefinition Width="655*"/>
+            <ColumnDefinition Width="217*"/>
+            <ColumnDefinition Width="641*"/>
         </Grid.ColumnDefinitions>
-        
-        <Grid Grid.Column="0">
+
+        <Grid Grid.Column="0" >
+            <Menu Height="20" VerticalAlignment="Top" Background="#FF221D34" >
+                <MenuItem Header="{DynamicResource m_RecMenu}" FontFamily="Segoe UI Black" Foreground="White" >
+                    <MenuItem Header="{DynamicResource m_LastLokingForMenu}" Command="{Binding OpenLastLokingForPageCommand}" Background="#FF221D34"></MenuItem>
+                    <MenuItem Header="{DynamicResource m_RecWithLoopBackMenu}" Background="#FF221D34"/>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource m_SpecialMenu}" FontFamily="Segoe UI Black" Foreground="White" >
+                    <MenuItem Header="{DynamicResource m_DevToolsMenu}" Command="{Binding OpenDevToolsPageCommand}" Background="#FF221D34"></MenuItem>
+                </MenuItem>
+
+            </Menu>
             <Button HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch"
                     Width="150" Height="150" Content=""
@@ -62,6 +72,22 @@
                                VerticalAlignment="Center"></Label>
                             <Image HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="{Binding ImageVisibility}"
                                  Source="pack://application:,,,/Assets/record.png" Height="32" Width="32">
+                                <Image.Triggers>
+                                    
+                                    <EventTrigger RoutedEvent="Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation  Storyboard.TargetProperty="Width" To="40" Duration="0:0:0:0.8" RepeatBehavior="Forever" ></DoubleAnimation>
+                                                <DoubleAnimation  Storyboard.TargetProperty="Height" To="40" Duration="0:0:0:0.8" RepeatBehavior="Forever"></DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+
+                                </Image.Triggers>
+
+                            </Image>
+                            <Image HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="{Binding DownImageVisibility}"
+                                 Source="pack://application:,,,/Assets/signs.png" Height="32" Width="32">
                                 <Image.Triggers>
 
                                     <EventTrigger RoutedEvent="Loaded">
@@ -109,13 +135,13 @@
 
             </Button>
         </Grid>
-        
-        <GridSplitter Grid.Column="1" ShowsPreview="False"
-        HorizontalAlignment="Center" VerticalAlignment="Stretch" />
-        <Frame Grid.Column="1" Content="{Binding FragPage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
+
+
+        <Frame Content="{Binding FragPage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Grid.Column="1" />
         <ToggleButton  Style="{StaticResource MaterialDesignActionToggleButton}" Grid.Column="0"
            HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                       Height="50" Width="50" Background="#FF221D34" IsChecked="{Binding RecType}">
+                       Height="50" Width="50" Background="#FF221D34" IsChecked="{Binding RecType}" Margin="0,0,0,-0.2">
             <ToggleButton.Content>
                 <Image Source="pack://application:,,,/Assets/charity.png" Height="40" Width="40"/>
             </ToggleButton.Content>
@@ -125,9 +151,9 @@
         </ToggleButton>
         <ToggleButton  Style="{StaticResource MaterialDesignActionToggleButton}" Grid.Column="0"
            HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                       Height="50" Width="50" Background="#FF221D34" IsChecked="{Binding Snuggler}">
+                       Height="50" Width="50" Background="#FF221D34" IsChecked="{Binding Snuggler}" Margin="0,0,1.8,-0.2">
             <ToggleButton.Content>
-                
+
                 <Image Source="pack://application:,,,/Assets/ear.png" Height="40" Width="40"/>
             </ToggleButton.Content>
 

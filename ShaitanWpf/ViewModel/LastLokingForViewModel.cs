@@ -40,11 +40,18 @@ namespace ShaitanWpf.ViewModel
         {
             var temp = DeserializerListOfLastQ();
             if (temp != null)
+            {
                 foreach (var item in temp)
                 {
                     Cards.Add(new LastLokingForModel(item.Title, item.Performer));
 
                 }
+            }
+            else
+            {
+                Cards.Add(new LastLokingForModel("Ничего не найденно", ""));
+            }
+              
 
             return;
         }

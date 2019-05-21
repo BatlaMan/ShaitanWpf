@@ -5,5 +5,11 @@
 
     <!--NoResukltMenu-->
     <v:String x:Key="m_NoResult">There is not result</v:String>
+    <v:String x:Key="m_RecMenu">Recognition</v:String>
+    <v:String x:Key="m_LastLokingForMenu">Last Search</v:String>
+    <v:String x:Key="m_DevToolsMenu">Del Tools</v:String>
+    <v:String x:Key="m_RecWithMicroMenu">Recognize with microphone</v:String>
+    <v:String x:Key="m_RecWithLoopBackMenu">Recognize with loopback</v:String>
+    <v:String x:Key="m_SpecialMenu">Special</v:String>
    
 </ResourceDictionary>

@@ -17,6 +17,7 @@ using ControlzEx;
 using System.Windows.Threading;
 using System.Threading;
 using System.Xml.Serialization;
+using Notifications.Wpf;
 
 namespace ShaitanWpf.ViewModel
 {
@@ -258,6 +259,7 @@ namespace ShaitanWpf.ViewModel
 
         private void ChangePlayingMusic()
         {
+            
             PlayingPerformerImage = new ImageBrush(selectedMusic.Image);
             NowPlayingPerformer = selectedMusic.Performer;
             NowPlayingTitle = selectedMusic.Title;
@@ -379,7 +381,28 @@ namespace ShaitanWpf.ViewModel
 
         public void OnFileDrop(string[] filepaths)
         {
-            LoadImageForCardAsync(filepaths);
+            for (int i = 0; i < filepaths.Length; i++)
+            {
+                if (Path.GetExtension(filepaths[i]) != ".mp3"
+                               && Path.GetExtension(filepaths[i]) != ".wav")
+                {
+                    MakeNotification("Неверный формат", "Файл какой-то из файлом имел не вернный формат"
+                        , NotificationType.Warning);
+                    return;
+                }
+            }
+                LoadImageForCardAsync(filepaths);
+        }
+        private void MakeNotification(string title, string message, NotificationType notification)
+        {
+            var notificationManager = new NotificationManager();
+
+            notificationManager.Show(new NotificationContent
+            {
+                Title = title,
+                Message = message,
+                Type = notification
+            });
         }
 
         private async void SavePlayListAsync()

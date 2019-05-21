@@ -5,5 +5,11 @@
 
     <!--NoResukltMenu-->
     <v:String x:Key="m_NoResult">Ничего не найдено</v:String>
+    <v:String x:Key="m_RecMenu">Распознование</v:String>
+    <v:String x:Key="m_LastLokingForMenu">Последние запросы</v:String>
+    <v:String x:Key="m_DevToolsMenu">Инструменты Разработчика</v:String>
+    <v:String x:Key="m_RecWithMicroMenu">Распознать с помощью микрофона</v:String>
+    <v:String x:Key="m_RecWithLoopBackMenu">Распознать звуки системы</v:String>
+    <v:String x:Key="m_SpecialMenu">Специальный</v:String>
 
 </ResourceDictionary>

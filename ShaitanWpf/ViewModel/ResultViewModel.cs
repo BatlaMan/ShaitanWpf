@@ -93,7 +93,7 @@ namespace ShaitanWpf.ViewModel
         {
             XmlSerializer formatter = new XmlSerializer(typeof(List<LastQuery>));
             List<LastQuery> temp;
-            if (!File.Exists("Saves\\lastQ.xml"))
+            if (File.Exists("Saves\\lastQ.xml"))
                 temp = LoadLastQuery();
             else temp = new List<LastQuery>();
             using (FileStream fs = new FileStream("Saves\\lastQ.xml", FileMode.OpenOrCreate))

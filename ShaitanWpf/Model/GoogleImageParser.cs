@@ -7,6 +7,7 @@ using ShaitanWpf.Model;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace ShaitanWpf.Model
 {
@@ -28,9 +29,14 @@ namespace ShaitanWpf.Model
         {
 
             string html = GetHtmlCode(imageName);
+            if (html == null || html == "")
+                return new MemoryStream();
             string urls = GetUrls(html);
-            string luckyUrl = urls;
-            byte[] image = GetBytedImage(luckyUrl);
+            if (urls == null || urls == "")
+                return new MemoryStream();
+            byte[] image = GetBytedImage(urls);
+            if (image == null || image.Length == 0)
+                return new MemoryStream();
             return new MemoryStream(image);
         }
 
@@ -38,6 +44,8 @@ namespace ShaitanWpf.Model
         {
 
             string html = GetHtmlCode(imageName);
+            if (html == null )
+                return new BitmapImage() ;
             string urls = GetUrls(html);
             string luckyUrl = urls;
             byte[] image = GetBytedImage(luckyUrl);
@@ -55,8 +63,17 @@ namespace ShaitanWpf.Model
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Accept = "text/html, application/xhtml+xml, */*";
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko";
+            HttpWebResponse response;
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
 
-            var response = (HttpWebResponse)request.GetResponse();
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
 
             
             using (Stream dataStream = response.GetResponseStream())

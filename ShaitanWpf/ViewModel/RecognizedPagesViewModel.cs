@@ -23,7 +23,7 @@ using System.Windows.Shapes;
 
 namespace ShaitanWpf.ViewModel
 {
-    class RecognizedPagesViewModel : INotifyPropertyChanged,IFileDragDropTarget
+    class RecognizedPagesViewModel : INotifyPropertyChanged, IFileDragDropTarget
     {
         private RelayCommand recognizCommand;
         public RelayCommand RecognizCommand
@@ -31,10 +31,31 @@ namespace ShaitanWpf.ViewModel
             get
             {
                 return recognizCommand;
-                      
+
             }
         }
-        
+        private RelayCommand openDevToolsPageCommand;
+        public RelayCommand OpenDevToolsPageCommand
+        {
+            get
+            {
+                return openDevToolsPageCommand;
+
+            }
+        }
+
+        private RelayCommand openLastLokingForPageCommand;
+        public RelayCommand OpenLastLokingForPageCommand
+        {
+            get
+            {
+                return openLastLokingForPageCommand;
+
+            }
+        }
+
+
+
         Page fragPage;
         public Page FragPage
         {
@@ -48,7 +69,7 @@ namespace ShaitanWpf.ViewModel
                 }
             }
         }
-        
+
 
         Visibility imageVisibility;
         public Visibility ImageVisibility
@@ -64,6 +85,20 @@ namespace ShaitanWpf.ViewModel
             }
         }
 
+        Visibility downImageVisibility;
+        public Visibility DownImageVisibility
+        {
+            get { return downImageVisibility; }
+            set
+            {
+                if (downImageVisibility != value)
+                {
+                    downImageVisibility = value;
+                    OnPropertyChanged("DownImageVisibility");
+                }
+            }
+        }
+        
         bool recType;
         public bool RecType
         {
@@ -107,19 +142,35 @@ namespace ShaitanWpf.ViewModel
                 }
             }
         }
+
         
         public RecognizedPagesViewModel()
         {
             recognizCommand = new RelayCommand(RecognizSound);
+            openDevToolsPageCommand = new RelayCommand(OpenDevToolsPage);
+            openLastLokingForPageCommand = new RelayCommand(OpenLastLokingForPage);
+            DownImageVisibility = Visibility.Hidden;
             recorder = new Recorder();
             FragPage = new MusicPlayerPage();
             RecButtonEnable = true;
+
             ImageVisibility = Visibility.Hidden;
-           
+
         }
+
+
         string conectionString = "mongodb://localhost";
         private IRecorder recorder;
 
+        private void OpenDevToolsPage(object obj)
+        {
+            FragPage = new DevToolsPage();
+        }
+
+        private void OpenLastLokingForPage(object obj)
+        {
+            FragPage = new LastLokingFor();
+        }
 
         private bool isRecording = false;
         private async void RecognizSound(object obj)
@@ -151,11 +202,24 @@ namespace ShaitanWpf.ViewModel
         }
 
         public void OnFileDrop(string[] filepaths)
-        {
-            
+        {           
+            if(System.IO.Path.GetExtension(filepaths[0]) ==".mp3"
+                || System.IO.Path.GetExtension(filepaths[0]) == ".wav")
             RecognizeFile(filepaths[0]);
+            else MakeNotification("Неверный формат", "Файл имел не верный формат", NotificationType.Success);
         }
 
+        private void MakeNotification(string title, string message, NotificationType notification)
+        {
+            var notificationManager = new NotificationManager();
+
+            notificationManager.Show(new NotificationContent
+            {
+                Title = title,
+                Message = message,
+                Type = notification
+            });
+        }
         private void ChangeRecType(bool type)
         {
             if (type)
@@ -220,6 +284,7 @@ namespace ShaitanWpf.ViewModel
 
         private async void RecognizeFile(string filePath)
         {
+            DownImageVisibility = Visibility.Visible;
             IAudioService audioService = new NAudioService();
             IDataStorage dataStorage = new MongoDatabaseHandler(conectionString, "Shaitan",
            "Songs", "Hash");
@@ -235,6 +300,7 @@ namespace ShaitanWpf.ViewModel
             if (queryResult.BestMath != null)
                 FragPage = new ResultPage(queryResult);
             else FragPage = new NoResultPage();
+            DownImageVisibility = Visibility.Hidden;
         }
       
         private void OnRecordingAbort(AbortType abortType)

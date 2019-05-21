@@ -133,10 +133,14 @@
     <Compile Include="Model\GoogleImageParser.cs" />
     <Compile Include="Model\LastLokingForModel.cs" />
     <Compile Include="Model\LastQuery.cs" />
+    <Compile Include="ViewModel\DevToolsViewModel.cs" />
     <Compile Include="ViewModel\LastLokingForViewModel.cs" />
     <Compile Include="ViewModel\MusicPlayerViewModel.cs" />
     <Compile Include="ViewModel\ResultViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
+    <Compile Include="View\DevToolsPage.xaml.cs">
+      <DependentUpon>DevToolsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LastLokingFor.xaml.cs">
       <DependentUpon>LastLokingFor.xaml</DependentUpon>
     </Compile>
@@ -157,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\lang.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DevToolsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -257,6 +265,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\mute-microphone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\DownArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\signs.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
