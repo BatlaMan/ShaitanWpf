@@ -52,9 +52,7 @@ namespace SoundIdentification
             album = tfile.Tag.Album;
             year = Convert.ToString(tfile.Tag.Year);
             comment = tfile.Tag.Comment;
-            genre = tfile.Tag.FirstGenre;
-
-
+            genre = tfile.Tag.FirstGenre;   
         }
 
         public override string ToString()

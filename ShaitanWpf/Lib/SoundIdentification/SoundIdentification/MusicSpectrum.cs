@@ -265,19 +265,21 @@ namespace SoundIdentification
                 return new QueryResult();
             int max = matchCounts.Select((x) => x.Num).Max();
             var result = matchCounts.First(x => x.Num == max);
-            var percent = matchCounts.Select(x => Convert.ToDouble(x.Num)/ pointCount);
+
             //List<SongMatchCount> matchGrouped = matchCounts.GroupBy(id => id.SongId).Select(x => new SongMatchCount()
             //{ SongId = x.Key , Num = x.Where(y => y.Num > 10).Sum(z => z.Num) }).ToList();
             //int max = matchGrouped.Select(x => x.Num).Max();
             //var result = matchGrouped.First(x => x.Num == max);
-
+            List<SongMatchCount> matchGrouped = matchCounts.GroupBy(p => p.SongId)
+                        .Select(g => new SongMatchCount { SongId = g.Key, Num = g.Count(x => x.Num > 10) }).ToList();
             Console.WriteLine($"Максимальный = {max} результат {result.SongId} кол-во совпадений {result.Num}");
-            if (max <= 1)
+            Console.WriteLine($"Длина макс группа {matchGrouped.Count} 1");
+            if (max <= 5)
             {
-                return new QueryResult(matchCounts);
+                return new QueryResult(matchGrouped);
             }
             Song song = db.GetSong(result.SongId);
-            QueryResult queryResult = new QueryResult(song, matchCounts);
+            QueryResult queryResult = new QueryResult(song, matchGrouped);
             return queryResult;
         }
 
